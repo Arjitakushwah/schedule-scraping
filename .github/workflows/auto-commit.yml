@@ -1,0 +1,26 @@
+name: Automated Daily Commit
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Runs daily at midnight UTC
+
+jobs:
+  commit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set Up Git Config (21f3000507@ds.study.iitm.ac.in)
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "21f3000507@ds.study.iitm.ac.in"
+
+      - name: Make a Dummy Change
+        run: |
+          date > last-update.txt  # Updates a timestamp file
+          git add last-update.txt
+          git commit -m "Automated update: $(date)"
+          git push
+
